@@ -1,0 +1,144 @@
+/*
+    Author: Matej
+    Description: bReviews styling
+*/
+
+.rating-box {
+    width: 40%;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.rating-summary-container {
+    display:inline-flex;
+    width: 100%;
+}
+.rating-summary-container h1 {
+    font-size: 60px;
+    text-align: center;
+    margin-bottom: 15px;
+    margin-top: 5px;
+}
+.score-container {
+    width: 25%;
+    margin-left: 25%;
+    text-align: center;
+}
+.score-container-counter {
+    font-family: 'Roboto', sans-serif;
+    text-transform: lowercase;
+    color: #9c9c9c;
+    font-size: 14px;
+    padding: 0;
+    margin-top: -6px
+}
+.fa {
+    font-size: 14px !important;
+}
+.score-stars {
+    margin: 0 auto;
+    margin-top: -18px;
+    width: 93%;
+    text-align: initial;
+}
+.rating-grouped-container {
+    float: right;
+    height: 100%;
+    width: 100%;
+    padding-left: 35px;
+}
+.rating-summary .rating-result > span::before {
+    -moz-opacity: .8 !important;
+    opacity: .8 !important;
+    filter: alpha(opacity=80) !important;
+    -moz-transition: width .25s ease !important;
+    transition: width .25s ease !important;
+    display: inline-block !important;
+    height: 100% !important;
+}
+.rating-grouped-container ul {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0;
+}
+.rating-grouped-container li {
+    list-style: none;
+    display: inline-flex;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin-bottom: 4px;
+}
+.rating-grouped-container li span {
+    line-height: 1.4;
+    padding-right: 10px;
+}
+/** Bars **/
+.rating-bar-container {
+    color: #737373;
+    height: 23px;
+    font-weight: 400;
+    position: relative;
+    width: 100%;
+}
+.bar-container .bar {
+    background: #ff5501;
+    filter: alpha(opacity=80);
+    -moz-transition: width .25s ease;
+    transition: width .25s ease;
+    display: inline-block;
+    height: 23px;
+}
+.bar-number {
+    color: #333;
+    font-size: 11px;
+    left: 5px;
+    position: absolute;
+    top: 4px;
+}
+.five {
+    -moz-opacity: 1;
+    opacity: 1;
+}
+.four {
+    -moz-opacity: .72;
+    opacity: .72;
+}
+.three {
+    -moz-opacity: .54;
+    opacity: .54;
+}
+.two {
+    -moz-opacity: .4;
+    opacity: .4;
+}
+.one {
+    -moz-opacity: .25;
+    opacity: .25;
+}
+/** Helpful's **/
+.review-helpful {
+    float: right;
+    margin-right: 60px;
+    width: 200px;
+    display: inline-flex;
+    text-align: center;
+}
+.review-helpful .fa {
+    font-size: 20px !important;
+    margin-right: 10px;
+}
+.review-like {
+    width: 50%;
+    line-height: 2.7
+}
+.review-dislike {
+    float: right;
+    width: 50%;
+    line-height: 2.7
+}
+.review-helpful span {
+    margin-right: 5px;
+    font-size: 14px;
+}
