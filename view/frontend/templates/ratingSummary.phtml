@@ -2,44 +2,47 @@
 $product = $block->getProduct();
 $ratings = $block->getProductRatingGroup($product);
 ?>
-<div class="rating-box">
-    <div class="rating-summary-container">
-        <div class="score-container">
-            <h1><?php echo $block->getProductRating($product); ?></h1>
-            <div class="score-stars rating-summary item" itemprop="reviewRating" itemscope="" itemtype="http://schema.org/Rating">
-                <div class="rating-result" title="<?php /* @escapeNotVerified */ echo $block->getRatingSummary($product) ?>%">
-                    <meta itemprop="worstRating" content = "1"/>
-                    <meta itemprop="bestRating" content = "100"/>
-                    <span style="width:<?php /* @escapeNotVerified */ echo $block->getRatingSummary($product) ?>%">
-                        <span itemprop="ratingValue"><?php /* @escapeNotVerified */ echo $block->getRatingSummary($product) ?>%</span>
-                    </span>
+
+<?php if(count($ratings)): ?>
+    <div class="rating-box">
+        <div class="rating-summary-container">
+            <div class="score-container">
+                <h1><?php echo $block->getProductRating($product); ?></h1>
+                <div class="score-stars rating-summary item" itemprop="reviewRating" itemscope="" itemtype="http://schema.org/Rating">
+                    <div class="rating-result" title="<?php /* @escapeNotVerified */ echo $block->getRatingSummary($product) ?>%">
+                        <meta itemprop="worstRating" content = "1"/>
+                        <meta itemprop="bestRating" content = "100"/>
+                        <span style="width:<?php /* @escapeNotVerified */ echo $block->getRatingSummary($product) ?>%">
+                            <span itemprop="ratingValue"><?php /* @escapeNotVerified */ echo $block->getRatingSummary($product) ?>%</span>
+                        </span>
+                    </div>
                 </div>
+                <span class="score-container-counter">
+                    <span class="fa fa-users" aria-hidden="true"></span>
+                    ukupno
+                    <i><?php echo $block->_totalVotes; ?></i>
+                </span>
             </div>
-            <span class="score-container-counter">
-                <span class="fa fa-users" aria-hidden="true"></span>
-                ukupno
-                <i><?php echo $block->_totalVotes; ?></i>
-            </span>
-        </div>
-        <div class="rating-grouped-container">
-            <ul>
-                <?php
-                $i = 5;
-                foreach($ratings as $rating):
-                ?>
-                   <li>
-                       <span><?php echo $i-- ?></span>
-                       <div class="rating-bar-container" itemprop="reviewRating" itemscope="" itemtype="http://schema.org/Rating">
-                           <div class="bar-container" title="<?php /* @escapeNotVerified */ echo $block->getProductRatingPercent($rating['value']) ?>%">
-                               <meta itemprop="worstRating" content = "1"/>
-                               <meta itemprop="bestRating" content = "100"/>
-                               <span class="bar <?php /* @escapeNotVerified */ echo $block->getBarOpacity($i+1) ?>" style="width:<?php /* @escapeNotVerified */ echo $block->getProductRatingPercent($rating['value']) ?>%"> </span>
-                               <span class="bar-number" aria-label="Ocjena: <?php echo $rating['value'] ?>"><?php echo $rating['value'] ?></span>
+            <div class="rating-grouped-container">
+                <ul>
+                    <?php
+                    $i = 5;
+                    foreach($ratings as $rating):
+                    ?>
+                       <li>
+                           <span><?php echo $i-- ?></span>
+                           <div class="rating-bar-container" itemprop="reviewRating" itemscope="" itemtype="http://schema.org/Rating">
+                               <div class="bar-container" title="<?php /* @escapeNotVerified */ echo $block->getProductRatingPercent($rating['value']) ?>%">
+                                   <meta itemprop="worstRating" content = "1"/>
+                                   <meta itemprop="bestRating" content = "100"/>
+                                   <span class="bar <?php /* @escapeNotVerified */ echo $block->getBarOpacity($i+1) ?>" style="width:<?php /* @escapeNotVerified */ echo $block->getProductRatingPercent($rating['value']) ?>%"> </span>
+                                   <span class="bar-number" aria-label="Ocjena: <?php echo $rating['value'] ?>"><?php echo $rating['value'] ?></span>
+                               </div>
                            </div>
-                       </div>
-                   </li>
-                <?php endforeach; ?>
-            </ul>
+                       </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
+<?php endif; ?>
