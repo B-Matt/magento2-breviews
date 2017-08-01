@@ -18,7 +18,7 @@ $_items = $block->getReviewsCollection()->getItems();
 $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
 ?>
 <?php if (count($_items)):?>
-    <div class="block review-list" id="customer-reviews">
+   <div class="block review-list" id="customer-reviews">
         <div class="block-title">
             <strong><?php /* @escapeNotVerified */ echo __('Customer Reviews') ?></strong>
         </div>
@@ -58,9 +58,49 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
                                 <span class="review-details-label"><?php /* @escapeNotVerified */ echo __('Posted on') ?></span>
                                 <time class="review-details-value" itemprop="datePublished" datetime="<?php /* @escapeNotVerified */ echo $block->formatDate($_review->getCreatedAt(), $format) ?>"><?php /* @escapeNotVerified */ echo $block->formatDate($_review->getCreatedAt(), $format) ?></time>
                             </p>
+                            <div class="review-comments">
+                                <a class="review-comments-comment-button" href="javascript:void(0);" onclick="javascript:openCommentInput(this, true);" >Comment</a>
+                                <a class="review-comments-comment-button" href="javascript:void(0);" onclick="javascript:openComments(this);" >View Comments</a>
+
+                                <div class="review-comments-container">
+                                    <ul>
+                                        <?php
+                                            $comments = Matej\bReviews\Helper\Data::getReviewComments($_review->getId());
+                                            foreach($comments as $_comment):
+                                        ?>
+                                            <?php if(is_null($_comment['parent'])): ?>
+                                                <li class="review-comments-list-white-layer">
+                                                    <span class="review-comment-author"><b><?php echo Matej\bReviews\Helper\Data::getCustomerNameById($_comment['customer_id']) ?></b> · <a class="review-comments-comment-button" href="javascript:void(0);" onclick="javascript:openCommentInput(this, false);" >Comment</a></span>
+                                                    <span class="review-comment-text"><?php echo $_comment['text'] ?></span>
+                                                    <div class="review-comments-input">
+                                                        <span>Comment Text: </span><br>
+                                                        <textarea rows="4" cols="50"></textarea>
+                                                        <button href="javascript:void(0);" onclick="javascript:submitReviewComment(this, '<?php echo $_review->getId() ?>', '<?php echo $_comment['comment_id'] ?>', '<?php echo Matej\bReviews\Helper\Data::getCustomerName() ?>');" class="action submit primary">Submit</button>
+                                                    </div>
+                                                    <ul>
+                                                        <?php foreach($comments as $_scndLevel): ?>
+                                                            <?php if($_comment['comment_id'] == $_scndLevel['parent']): ?>
+                                                                <li class="review-comments-list-grey-layer">
+                                                                    <span class="review-comment-author"><b><?php echo Matej\bReviews\Helper\Data::getCustomerNameById($_scndLevel['customer_id']) ?></b></span>
+                                                                    <span class="review-comment-text"><?php echo $_scndLevel['text'] ?></span>
+                                                                </li>
+                                                            <?php endif; ?>
+                                                        <?php endforeach; ?>
+                                                    </ul>
+                                                </li>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                                <div class="review-comments-input">
+                                    <span>Comment Text: </span><br>
+                                    <textarea rows="4" cols="50"></textarea>
+                                    <button href="javascript:void(0);" onclick="javascript:submitReviewComment(this, '<?php echo $_review->getId() ?>', null, '<?php echo Matej\bReviews\Helper\Data::getCustomerName() ?>');" class="action submit primary">Submit</button>
+                                </div>
+                            </div>
                             <div class="review-helpful">
                                 <div class="review-like">
-                                    <span class="test"><?php echo Matej\bReviews\Helper\Data::getReviewLikes($_review->getId()); ?></span>
+                                    <span><?php echo Matej\bReviews\Helper\Data::getReviewLikes($_review->getId()); ?></span>
                                     <a href="javascript:void(0);" onclick="javascript:likeButton(this, '<?php echo $_review->getId() ?>', 1)"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
                                 </div>
                                 <div class="review-dislike">
@@ -80,7 +120,7 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
 <?php endif;?>
 
 <script>
-    function likeButton(domElement, productID, statusID) {
+    function likeButton(domElement, reviewID, statusID) {
         require(["jquery"], function($) {
 
             // Incrementing (Dis)likes Value
@@ -99,19 +139,62 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
 
             $.ajax({
                 type: 'post',
-                url: "<?php echo $block->getUrl("reviewlike/index/index"); ?>",
-                data: { productid: productID, statusid: statusID },
-                dataType: 'json'
-                /*
-                    // NOTE: Remember to add , next to 'json'!
-                    success: function(data, textStatus ){
-                        alert(data); // Debugging Ajax Call
-                    },
-                    error: function(xhr, textStatus, errorThrown){
-                        alert(errorThrown); // Debugging Ajax Call
-                    }
-                */
+                url: "<?php echo $block->getUrl("breviews/index/index"); ?>",
+                data: { reviewid: reviewID, statusid: statusID },
+                dataType: 'html'
+                /*// NOTE: Remember to add , next to 'json'!
+                success: function(data, textStatus ){
+                    alert(data); // Debugging Ajax Call
+                },
+                error: function(xhr, textStatus, errorThrown){
+                    alert(errorThrown); // Debugging Ajax Call
+                }*/
             });
+        });
+    }
+    function openCommentInput(domElement, isRoot) {
+        require(["jquery"], function($) {
+            // Open input form for commenting
+            if(isRoot == true)
+                $(domElement).siblings('.review-comments-input').slideToggle();
+            else
+                $(domElement).parent().siblings('.review-comments-input').slideToggle();
+
+        });
+    }
+    function openComments(domElement) {
+        require(["jquery"], function($) {
+            // Open comments
+            $(domElement).next().slideToggle();
+        });
+    }
+    function submitReviewComment(domElement, reviewId, parentId, poster) {
+        require(["jquery"], function($) {
+            var commentText = $(domElement).prev().val();
+            $.ajax({
+                type: 'post',
+                url: "<?php echo $block->getUrl("breviews/comments/index"); ?>",
+                data: { reviewid: reviewId, commenttext: commentText, parent: parentId },
+                dataType: 'json'
+                /*success: function(data, textStatus ){
+                    alert(data); // Debugging Ajax Call
+                },
+                error: function(xhr, textStatus, errorThrown){
+                    alert(errorThrown); // Debugging Ajax Call
+                }*/
+            });
+
+            var renderText = '<li class="review-comments-list-' + ((parentId == null) ? 'white' : 'grey') + '-layer"><span class="review-comment-author"><b>' + poster + '</b></span>';
+            renderText += '<span class="review-comment-text">' + commentText + '</span></li>';
+
+            if(parentId != null)
+                var element = $(domElement).parent().next();
+            else
+                var element = $(domElement).parent().prev().find('ul:first-child');
+
+            $(domElement).parent().slideToggle("slow");
+            $(element).append(renderText);
+            $(domElement).prev().val('');
         });
     }
 </script>

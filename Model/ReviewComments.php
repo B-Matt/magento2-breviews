@@ -9,11 +9,11 @@ namespace Matej\bReviews\Model;
 
 class Review extends \Magento\Framework\Model\AbstractModel implements TestInterface, \Magento\Framework\DataObject\IdentityInterface
 {
-    const CACHE_TAG = 'matej_breviews_review';
+    const CACHE_TAG = 'matej_breviews_reviewcomments';
 
     protected function _construct()
     {
-        $this->_init('Matej\bReviews\Model\ResourceModel\Reviews');
+        $this->_init('Matej\bReviews\Model\ResourceModel\ReviewComments');
     }
 
     public function getIdentities()

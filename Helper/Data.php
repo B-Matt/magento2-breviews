@@ -16,4 +16,22 @@ class Data extends AbstractHelper
         $block = \Magento\Framework\App\ObjectManager::getInstance()->create('Matej\bReviews\Block\ReviewLikes');
         return $block->getReviewDislikes($reviewId);
     }
+
+    public static function getReviewComments($reviewId)
+    {
+        $block = \Magento\Framework\App\ObjectManager::getInstance()->create('Matej\bReviews\Block\ReviewComments');
+        return $block->getReviewComments(NULL, $reviewId);
+    }
+
+    public static function getCustomerName()
+    {
+        $block = \Magento\Framework\App\ObjectManager::getInstance()->create('Matej\bReviews\Block\ReviewComments');
+        return $block->getCustomerName();
+    }
+
+    public static function getCustomerNameById($id)
+    {
+        $block = \Magento\Framework\App\ObjectManager::getInstance()->create('Matej\bReviews\Block\ReviewComments');
+        return $block->getCustomerNameById($id);
+    }
 }

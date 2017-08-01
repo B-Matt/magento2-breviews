@@ -3,25 +3,17 @@
  * Copyright © 2017 B-Matt. All rights reserved.
  * See LICENSE.txt for license details.
  */
-namespace Matej\bReviews\Controller\Index;
+namespace Matej\bReviews\Controller\Comments;
 
 class Index extends \Magento\Framework\App\Action\Action
 {
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
-     */
-    protected $resultPageFactory;
-
-    /**
      * @param \Magento\Framework\App\Action\Context $context
-     * @param \Magento\Framework\View\Result\PageFactory resultPageFactory
      */
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory
+        \Magento\Framework\App\Action\Context $context
     )
     {
-        $this->resultPageFactory = $resultPageFactory;
         parent::__construct($context);
     }
 
@@ -38,17 +30,18 @@ class Index extends \Magento\Framework\App\Action\Action
 
         if ($this->getRequest()->isAjax()) {
             $reviewId           = $this->getRequest()->getPostValue('reviewid');
-            $statusId           = $this->getRequest()->getPostValue('statusid');
+            $commentText        = $this->getRequest()->getPostValue('commenttext');
+            $commentParent      = $this->getRequest()->getPostValue('parent');
 
             $storeManager       = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
             $customerSession    = $objectManager->get('\Magento\Customer\Model\Session');
-            $resourceModel      = $objectManager->get('\Matej\bReviews\Model\ResourceModel\Reviews');
+            $resourceModel      = $objectManager->get('\Matej\bReviews\Model\ResourceModel\ReviewComments');
 
             $customerId         = $customerSession->getCustomerId();
             $storeId            = $storeManager->getStore()->getId();
 
-            $resourceModel->saveLikeData($reviewId, $storeId, $customerId, $statusId);
-            return $result->setData($reviewId);
+            $commentId = $resourceModel->saveCommentData($reviewId, $storeId, $customerId, $commentText, ($commentParent == 0) ? null : $commentParent);
+            return $result->setData($commentId);
         }
     }
 }

@@ -32,7 +32,7 @@
     padding: 0;
     margin-top: -6px
 }
-.fa {
+.fa-users {
     font-size: 14px !important;
 }
 .score-stars {
@@ -120,10 +120,11 @@
 /** Helpful's **/
 .review-helpful {
     float: right;
-    width: 200px;
+    width: auto;
     display: inline-flex;
     text-align: center;
     justify-content: center;
+    margin-right: 25px;
 }
 .review-helpful .fa {
     font-size: 20px !important;
@@ -142,4 +143,71 @@
 .review-helpful span {
     margin-right: 5px;
     font-size: 14px;
+}
+/** Comments **/
+.review-comments {
+    display: grid;
+    width: 100%;
+}
+.review-comments-input {
+    display: none;
+    width: 60%;
+    height: 100%;
+    overflow: auto;
+    margin-top: 15px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+.review-comments-comment-button {
+    width: 12%;
+    margin-right: 30px;
+}
+.review-comments-input textarea {
+    width: 100%;
+    padding: 0;
+    margin: 0 auto;
+}
+.review-comments-input span {
+    font-family: 'Arial', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.review-comments-input button {
+    float: right !important;
+    margin-top: 10px;
+}
+.review-comments-container {
+    display: none;
+    background-color: #F5F5F5;
+    margin-top: 10px;
+    padding: 10px;
+    height: auto;
+    max-height: 220px;
+    min-height: 0px;
+    overflow-y: auto;
+}
+.review-comments-container ul {
+    padding-left: 10px;
+}
+.review-comments-container li {
+    border-left: 3px solid #1979c3;
+    list-style: none;
+    padding: 5px 15px 5px 10px;
+    margin-bottom: 5px;
+}
+.review-comments-list-white-layer {
+    background: white;
+}
+.review-comments-list-grey-layer {
+    background: #F5F5F5;
+}
+.review-comment-author {
+    font-size: 12px;
+}
+.review-comment-text {
+    margin-left: 20px;
+    margin-top: 5px;
+    display: block;
+    margin-bottom: 10px;
 }

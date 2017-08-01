@@ -19,12 +19,6 @@ class Reviews extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     /*
      * Loading
      */
-    public function loadById($id)
-    {
-        $connection = $this->getConnection();
-        $where = $connection->quoteInto("like_id = ?", $id);
-        return $connection->fetchOne($connection->select()->from($this->getMainTable())->where($where));
-    }
     public function loadReviewLikes($reviewID, $storeID)
     {
         $connection = $this->getConnection();
@@ -45,6 +39,18 @@ class Reviews extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
             ->where('like_status = ?', 2);
         return (int)$this->getConnection()->fetchOne($select);
     }
+    //TODO: Reviews sorting by $sortID
+    public function loadSortedReviews($sortID, $storeID, $productID)
+    {
+        $connection = $this->getConnection();
+        $query  = "SELECT *,";
+        $query .= "(SELECT COUNT(*) FROM review_likes WHERE (review_id = review.review_id) AND like_status = '" . $sortID . "' AND store_id = '" . $storeID . "')";
+        $query .= "AS review_count FROM review WHERE status_id = '1' AND entity_pk_value = '" . $productID . "' ORDER BY review_count DESC";
+
+        $select = $connection->query($query);
+        return $this->getConnection()->fetchOne($select);
+    }
+
     /*
      * Inserts
      */

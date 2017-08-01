@@ -27,6 +27,16 @@ class ReviewSummary extends \Magento\Framework\View\Element\Template
     /*
      * Publics
      */
+    public function getProductRating($product)
+    {
+        return ( $this->getRatingSummary($product) / 100 ) * 5;
+    }
+
+    public function getProductRatingPercent($productVotes)
+    {
+        return ( $productVotes / $this->_totalVotes ) * 100;
+    }
+
     public function getProduct()
     {
         $coreRegistry = \Magento\Framework\App\ObjectManager::getInstance()->get('\Magento\Framework\Registry');
@@ -43,16 +53,6 @@ class ReviewSummary extends \Magento\Framework\View\Element\Template
         $reviewFactory->create()->getEntitySummary($product, $storeId);
         $ratingSummary = $product->getRatingSummary()->getRatingSummary();
         return $ratingSummary;
-    }
-
-    public function getProductRating($product)
-    {
-        return ( $this->getRatingSummary($product) / 100 ) * 5;
-    }
-
-    public function getProductRatingPercent($productVotes)
-    {
-        return ( $productVotes / $this->_totalVotes ) * 100;
     }
 
     public function getProductRatingGroup($product)
