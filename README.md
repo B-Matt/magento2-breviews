@@ -3,6 +3,7 @@
 
 This extension adds features to your Magento 2 store at product review page!
 With this extension you can see total score of reviews and review score summary. It removes nickname section in a add review form but extension takes customer name and put it instead (if guest send review it will put "Guest" instead of username).
+It supports full page caching because dynamic objects are not cacheable!
  
 ## Requirements
 
