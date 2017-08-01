@@ -17,10 +17,10 @@ class Data extends AbstractHelper
         return $block->getReviewDislikes($reviewId);
     }
 
-    public static function getReviewComments($reviewId)
+    public static function getHtml($reviewId)
     {
         $block = \Magento\Framework\App\ObjectManager::getInstance()->create('Matej\bReviews\Block\ReviewComments');
-        return $block->getReviewComments(NULL, $reviewId);
+        return $block->getHtml(NULL, $reviewId);
     }
 
     public static function getCustomerName()

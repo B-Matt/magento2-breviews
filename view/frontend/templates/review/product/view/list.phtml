@@ -64,32 +64,7 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
 
                                 <div class="review-comments-container">
                                     <ul>
-                                        <?php
-                                            $comments = Matej\bReviews\Helper\Data::getReviewComments($_review->getId());
-                                            foreach($comments as $_comment):
-                                        ?>
-                                            <?php if(is_null($_comment['parent'])): ?>
-                                                <li class="review-comments-list-white-layer">
-                                                    <span class="review-comment-author"><b><?php echo Matej\bReviews\Helper\Data::getCustomerNameById($_comment['customer_id']) ?></b> · <a class="review-comments-comment-button" href="javascript:void(0);" onclick="javascript:openCommentInput(this, false);" >Comment</a></span>
-                                                    <span class="review-comment-text"><?php echo $_comment['text'] ?></span>
-                                                    <div class="review-comments-input">
-                                                        <span>Comment Text: </span><br>
-                                                        <textarea rows="4" cols="50"></textarea>
-                                                        <button href="javascript:void(0);" onclick="javascript:submitReviewComment(this, '<?php echo $_review->getId() ?>', '<?php echo $_comment['comment_id'] ?>', '<?php echo Matej\bReviews\Helper\Data::getCustomerName() ?>');" class="action submit primary">Submit</button>
-                                                    </div>
-                                                    <ul>
-                                                        <?php foreach($comments as $_scndLevel): ?>
-                                                            <?php if($_comment['comment_id'] == $_scndLevel['parent']): ?>
-                                                                <li class="review-comments-list-grey-layer">
-                                                                    <span class="review-comment-author"><b><?php echo Matej\bReviews\Helper\Data::getCustomerNameById($_scndLevel['customer_id']) ?></b></span>
-                                                                    <span class="review-comment-text"><?php echo $_scndLevel['text'] ?></span>
-                                                                </li>
-                                                            <?php endif; ?>
-                                                        <?php endforeach; ?>
-                                                    </ul>
-                                                </li>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
+                                        <?php echo Matej\bReviews\Helper\Data::getHtml($_review->getId()); ?>
                                     </ul>
                                 </div>
                                 <div class="review-comments-input">
@@ -177,15 +152,15 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
                 data: { reviewid: reviewId, commenttext: commentText, parent: parentId },
                 dataType: 'json'
                 /*success: function(data, textStatus ){
-                    alert(data); // Debugging Ajax Call
-                },
-                error: function(xhr, textStatus, errorThrown){
-                    alert(errorThrown); // Debugging Ajax Call
-                }*/
+                 alert(data); // Debugging Ajax Call
+                 },
+                 error: function(xhr, textStatus, errorThrown){
+                 alert(errorThrown); // Debugging Ajax Call
+                 }*/
             });
 
-            var renderText = '<li class="review-comments-list-' + ((parentId == null) ? 'white' : 'grey') + '-layer"><span class="review-comment-author"><b>' + poster + '</b></span>';
-            renderText += '<span class="review-comment-text">' + commentText + '</span></li>';
+            var renderText = '<li class="review-comments-list-' + ((parentId % 2 == 0) ? 'white' : 'grey') + '-layer"><span class="review-comment-author"><?php /* @escapeNotVerified */ echo __('Comment by')?> ';
+            renderText += '<b>' + poster + '</b></span><span class="review-comment-text">' + commentText + '</span></li>';
 
             if(parentId != null)
                 var element = $(domElement).parent().next();
@@ -197,4 +172,5 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
             $(domElement).prev().val('');
         });
     }
+
 </script>
