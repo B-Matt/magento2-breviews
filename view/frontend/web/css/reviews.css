@@ -146,7 +146,6 @@
 }
 /** Comments **/
 .review-comments {
-    display: grid;
     width: 100%;
 }
 .review-comments-input {

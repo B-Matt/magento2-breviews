@@ -14,8 +14,11 @@
  */
 ?>
 <?php
-$_items = $block->getReviewsCollection()->getItems();
-$format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
+    $objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
+    $moduleManager = $objectManager->get('\Magento\Framework\Module\Manager');
+
+    $_items = $block->getReviewsCollection()->getItems();
+    $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
 ?>
 <?php if (count($_items)):?>
    <div class="block review-list" id="customer-reviews">
@@ -50,6 +53,9 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
                             <?php echo nl2br($block->escapeHtml($_review->getDetail())) ?>
                         </div>
                         <div class="review-details">
+                            <?php if($moduleManager->isEnabled('Matej_Gravatar')): ?>
+                                <img class="review-avatar" src="<?php echo Matej\Gravatar\Helper\Data::getCustomerAvatarById($_review->getData('customer_id')); ?>" alt="avatar" />
+                            <?php endif; ?>
                             <p class="review-author">
                                 <span class="review-details-label"><?php /* @escapeNotVerified */ echo __('Review by')?></span>
                                 <strong class="review-details-value" itemprop="author"><?php echo $block->escapeHtml($_review->getNickname()) ?></strong>
