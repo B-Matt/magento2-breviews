@@ -13,7 +13,7 @@ Magento 2.0+
 
 ## How to install
 
-Installation is easy. You can use [Composer](https://getcomposer.org/)or you can put all files from GitHub direcly to your folders. In your code folder create two more folders "Matej\bReviews" and run command:
+Installation is easy. You can use [Composer](https://getcomposer.org/) or you can put all files from GitHub direcly to your folders. In your code folder create two more folders "Matej\bReviews" and run command:
 ```php bin/magento setup:upgrade ```. Your folder structure should look like this:
 ```
 app/code/
@@ -24,5 +24,5 @@ app/code/
 ```
 
 ## Note
-This code is pretty much automate without admin code because this code is made by young developer at his internship at [Inchho](http://www.inchoo.net/) coding in Magento 2 framework for a 2 weeks. This code is practice for this framework and it may not work like you expect nor have good practice code like in professional extensions!
+This code is pretty much automate without admin code because this code is made by young developer at his internship at [Inchoo](http://www.inchoo.net/) coding in Magento 2 framework for a 2 weeks. This code is practice for this framework and it may not work like you expect nor have good practice code like in professional extensions!
 Thanks for looking at this extension! =)
