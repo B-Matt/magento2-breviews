@@ -145,8 +145,20 @@
     }
     function openComments(domElement) {
         require(["jquery"], function($) {
-            // Open comments
-            $(domElement).next().slideToggle();
+            if($(domElement).next().children().find("li").length != 0) {
+                // Open comments
+                $(domElement).next().slideToggle();
+            }
+        });
+    }
+    function collapseComment(domElement) {
+        require(["jquery"], function($) {
+            $(domElement).parent().parent().find('ul').toggle();
+
+            if($(domElement).html() == '[-]')
+                $(domElement).html('[+]');
+            else
+                $(domElement).html('[-]');
         });
     }
     function submitReviewComment(domElement, reviewId, parentId, poster) {

@@ -85,7 +85,7 @@ class ReviewComments extends \Magento\Framework\View\Element\Template
         if (isset($index[$arrayParent])) {
             foreach ($index[$arrayParent] as $id) {
                 $html .= '<li class="review-comments-list-' . (($parent_id % 2) == 0 ? ('white') : ('grey')) . '-layer">';
-                $html .= '<span class="review-comment-author">Comment by <b>' . $this->getCustomerNameById($comments[$id]['customer_id']) . '</b> · <a class="review-comments-comment-button" href="javascript:void(0);" onclick="javascript:openCommentInput(this, false);" >Comment</a></span>';
+                $html .= '<span class="review-comment-author">Comment by <b>' . $this->getCustomerNameById($comments[$id]['customer_id']) . '</b> · <a class="review-comments-comment-button" href="javascript:void(0);" onclick="javascript:openCommentInput(this, false);" >Comment</a><a class="review-comments-collapse" href="javascript:void(0);" onclick="javascript:collapseComment(this);">[-]</a></span></span>';
                 $html .= '<span class="review-comment-text">' . $comments[$id]['text'] . '</span>';
                 $html .= '<div class="review-comments-input">';
                 $html .= '<span>Comment Text: </span><br>';
