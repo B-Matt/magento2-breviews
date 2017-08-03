@@ -7,7 +7,7 @@
 -->
 <layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
     <container name="root">
-        <block class="Matej\bReviews\Block\ReviewSummary" name="rating_summary" before="-" template="ratingSummary.phtml" cacheable="false"/>
+        <block class="Matej\bReviews\Block\ReviewSummary" name="rating_summary" before="-" template="html/ratingSummary.phtml" cacheable="false"/>
         <block class="Magento\Review\Block\Product\View\ListView" name="product.info.product_additional_data" as="product_additional_data" template="Matej_bReviews::review/product/view/list.phtml" cacheable="false">
             <block class="Matej\bReviews\Block\ReviewComments" name="review_comments"/>
             <block class="Matej\bReviews\Block\ReviewLikes" name="review_helpful"/>
