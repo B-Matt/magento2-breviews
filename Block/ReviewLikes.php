@@ -11,6 +11,17 @@ class ReviewLikes extends \Magento\Framework\View\Element\Template
     /*
      * Vars
      */
+
+    /**
+     * Current template name
+     *
+     * @var string
+     */
+    protected $_template = 'Matej_bReviews::html/reviewLikes.phtml';
+
+    /**
+     * @var \Matej\bReviews\Model\ReviewFactory
+     */
     protected $_reviewsFactory;
 
     /*
@@ -28,6 +39,10 @@ class ReviewLikes extends \Magento\Framework\View\Element\Template
     /*
      * Publics
      */
+    /**
+     * @param $reviewId
+     * @return mixed
+     */
     public function getReviewLikes($reviewId)
     {
         $objectManager  = \Magento\Framework\App\ObjectManager::getInstance();
@@ -35,9 +50,13 @@ class ReviewLikes extends \Magento\Framework\View\Element\Template
         $resourceModel  = $objectManager->get('\Matej\bReviews\Model\ResourceModel\Reviews');
 
         $storeId = $storeManager->getStore()->getId();
-        return $resourceModel->loadReviewLikes($reviewId, $storeId);;
+        return $resourceModel->loadReviewLikes($reviewId, $storeId);
     }
 
+    /**
+     * @param $reviewId
+     * @return mixed
+     */
     public function getReviewDislikes($reviewId)
     {
         $objectManager  = \Magento\Framework\App\ObjectManager::getInstance();

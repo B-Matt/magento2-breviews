@@ -11,6 +11,17 @@ class ReviewComments extends \Magento\Framework\View\Element\Template
     /*
      * Vars
      */
+
+    /**
+     * Current template name
+     *
+     * @var string
+     */
+    protected $_template = 'Matej_bReviews::html/reviewComments.phtml';
+
+    /**
+     * @var \Matej\bReviews\Model\ReviewFactory
+     */
     protected $_reviewsFactory;
 
     /*

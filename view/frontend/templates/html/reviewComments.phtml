@@ -1,0 +1,109 @@
+<a class="review-comments-comment-button" href="javascript:void(0);" onclick="javascript:openCommentInput(this, true);" >Comment</a>
+<a class="review-comments-comment-button" href="javascript:void(0);" onclick="javascript:openComments(this);" >View Comments</a>
+
+<div class="review-comments-container">
+    <ul>
+
+        <?php echo $block->getHtml(NULL, $block->getData('review_id')); ?>
+    </ul>
+</div>
+<div class="review-comments-input">
+    <span>Comment Text: </span><br>
+    <textarea rows="4" cols="50"></textarea>
+    <button href="javascript:void(0);" onclick="javascript:submitReviewComment(this, '<?php echo $block->getData('review_id') ?>', null, 'ada');" class="action submit primary">Submit</button>
+</div>
+
+<!-- JavaScript -->
+<script>
+    function likeButton(domElement, reviewID, statusID) {
+        require(["jquery"], function($) {
+
+            // Incrementing (Dis)likes Value
+            $(domElement).prev().text(parseInt($(domElement).prev().text(), 10) + 1);
+
+            // Disabling Current Button
+            $(domElement).prop("onclick", null).css("color", "#9f9f9f");
+
+            if(statusID === 1) {
+                // Disabling Dislike Button
+                $(domElement).parents(":eq(1)").find(".review-dislike").find("a").prop("onclick", null).css("color", "#9f9f9f");
+            } else {
+                // Disabling Like Button
+                $(domElement).parents(":eq(1)").find(".review-like").find("a").prop("onclick", null).css("color", "#9f9f9f");
+            }
+
+            $.ajax({
+                type: 'post',
+                url: "<?php echo $block->getUrl("breviews/index/index"); ?>",
+                data: { reviewid: reviewID, statusid: statusID },
+                dataType: 'html'
+                /*// NOTE: Remember to add , next to 'json'!
+                 success: function(data, textStatus ){
+                 alert(data); // Debugging Ajax Call
+                 },
+                 error: function(xhr, textStatus, errorThrown){
+                 alert(errorThrown); // Debugging Ajax Call
+                 }*/
+            });
+        });
+    }
+    function openCommentInput(domElement, isRoot) {
+        require(["jquery"], function($) {
+            // Open input form for commenting
+            if(isRoot === true)
+                $(domElement).siblings('.review-comments-input').slideToggle();
+            else
+                $(domElement).parent().siblings('.review-comments-input').slideToggle();
+
+        });
+    }
+    function openComments(domElement) {
+        require(["jquery"], function($) {
+            if($(domElement).next().children().find("li").length !== 0) {
+                // Open comments
+                $(domElement).next().slideToggle();
+            }
+        });
+    }
+    function collapseComment(domElement) {
+        require(["jquery"], function($) {
+            $(domElement).parent().parent().find('ul').toggle();
+
+            if($(domElement).html() === '[-]')
+                $(domElement).html('[+]');
+            else
+                $(domElement).html('[-]');
+        });
+    }
+    function submitReviewComment(domElement, reviewId, parentId, poster) {
+        require(["jquery"], function($) {
+            var commentText = $(domElement).prev().val();
+            $.ajax({
+                type: 'post',
+                url: "<?php echo $block->getUrl("breviews/comments/index"); ?>",
+                data: { reviewid: reviewId, commenttext: commentText, parent: parentId },
+                dataType: 'json'
+                /*success: function(data, textStatus ){
+                 alert(data); // Debugging Ajax Call
+                 },
+                 error: function(xhr, textStatus, errorThrown){
+                 alert(errorThrown); // Debugging Ajax Call
+                 }*/
+            });
+
+            var renderText = '<li class="review-comments-list-' + ((parentId % 2 === 0) ? 'white' : 'grey') + '-layer"><span class="review-comment-author"><?php /* @escapeNotVerified */ echo __('Comment by')?> ';
+            renderText += '<b>' + poster + '</b></span><span class="review-comment-text">' + commentText + '</span></li>';
+            var element;
+
+            if(parentId !== null)
+                element = $(domElement).parent().next();
+            else
+                element = $(domElement).parent().prev().find('ul:first-child');
+
+            $(domElement).parent().slideToggle("slow");
+            $(element).append(renderText);
+            $(domElement).prev().val('');
+        });
+    }
+
+</script>

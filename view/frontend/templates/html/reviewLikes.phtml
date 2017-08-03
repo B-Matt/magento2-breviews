@@ -1,0 +1,17 @@
+<?php
+    /**
+     * Copyright © 2017 B-Matt. All rights reserved.
+     * See LICENSE.txt for license details.
+     */
+?>
+
+<div class="review-helpful">
+    <div class="review-like">
+        <span><?php echo $block->getReviewLikes($block->getData('review_id')); ?></span>
+        <a href="javascript:void(0);" onclick="javascript:likeButton(this, '<?php echo $block->getData('review_id') ?>', 1)"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
+    </div>
+    <div class="review-dislike">
+        <span><?php echo $block->getReviewDislikes($block->getData('review_id')); ?></span>
+        <a href="javascript:void(0);" onclick="javascript:likeButton(this, '<?php echo $block->getData('review_id') ?>', 2)"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
+    </div>
+</div>

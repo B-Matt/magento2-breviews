@@ -65,30 +65,15 @@
                                 <time class="review-details-value" itemprop="datePublished" datetime="<?php /* @escapeNotVerified */ echo $block->formatDate($_review->getCreatedAt(), $format) ?>"><?php /* @escapeNotVerified */ echo $block->formatDate($_review->getCreatedAt(), $format) ?></time>
                             </p>
                             <div class="review-comments">
-                                <a class="review-comments-comment-button" href="javascript:void(0);" onclick="javascript:openCommentInput(this, true);" >Comment</a>
-                                <a class="review-comments-comment-button" href="javascript:void(0);" onclick="javascript:openComments(this);" >View Comments</a>
-
-                                <div class="review-comments-container">
-                                    <ul>
-                                        <?php echo Matej\bReviews\Helper\Data::getHtml($_review->getId()); ?>
-                                    </ul>
-                                </div>
-                                <div class="review-comments-input">
-                                    <span>Comment Text: </span><br>
-                                    <textarea rows="4" cols="50"></textarea>
-                                    <button href="javascript:void(0);" onclick="javascript:submitReviewComment(this, '<?php echo $_review->getId() ?>', null, '<?php echo Matej\bReviews\Helper\Data::getCustomerName() ?>');" class="action submit primary">Submit</button>
-                                </div>
+                                <?php
+                                    $block->getChildBlock('review_comments')->setData("review_id", $_review->getId());
+                                    echo $block->getChildHtml('review_comments', false);
+                                ?>
                             </div>
-                            <div class="review-helpful">
-                                <div class="review-like">
-                                    <span><?php echo Matej\bReviews\Helper\Data::getReviewLikes($_review->getId()); ?></span>
-                                    <a href="javascript:void(0);" onclick="javascript:likeButton(this, '<?php echo $_review->getId() ?>', 1)"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
-                                </div>
-                                <div class="review-dislike">
-                                    <span><?php echo Matej\bReviews\Helper\Data::getReviewDislikes($_review->getId()); ?></span>
-                                    <a href="javascript:void(0);" onclick="javascript:likeButton(this, '<?php echo $_review->getId() ?>', 2)"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
-                                </div>
-                            </div>
+                            <?php
+                                $block->getChildBlock('review_helpful')->setData("review_id", $_review->getId());
+                                echo $block->getChildHtml('review_helpful', false);
+                            ?>
                         </div>
                     </li>
                 <?php endforeach; ?>
@@ -99,96 +84,3 @@
         </div>
     </div>
 <?php endif;?>
-
-<script>
-    function likeButton(domElement, reviewID, statusID) {
-        require(["jquery"], function($) {
-
-            // Incrementing (Dis)likes Value
-            $(domElement).prev().text(parseInt($(domElement).prev().text(), 10) + 1);
-
-            // Disabling Current Button
-            $(domElement).prop("onclick", null).css("color", "#9f9f9f");
-
-            if(statusID === 1) {
-                // Disabling Dislike Button
-                $(domElement).parents(":eq(1)").find(".review-dislike").find("a").prop("onclick", null).css("color", "#9f9f9f");
-            } else {
-                // Disabling Like Button
-                $(domElement).parents(":eq(1)").find(".review-like").find("a").prop("onclick", null).css("color", "#9f9f9f");
-            }
-
-            $.ajax({
-                type: 'post',
-                url: "<?php echo $block->getUrl("breviews/index/index"); ?>",
-                data: { reviewid: reviewID, statusid: statusID },
-                dataType: 'html'
-                /*// NOTE: Remember to add , next to 'json'!
-                success: function(data, textStatus ){
-                    alert(data); // Debugging Ajax Call
-                },
-                error: function(xhr, textStatus, errorThrown){
-                    alert(errorThrown); // Debugging Ajax Call
-                }*/
-            });
-        });
-    }
-    function openCommentInput(domElement, isRoot) {
-        require(["jquery"], function($) {
-            // Open input form for commenting
-            if(isRoot == true)
-                $(domElement).siblings('.review-comments-input').slideToggle();
-            else
-                $(domElement).parent().siblings('.review-comments-input').slideToggle();
-
-        });
-    }
-    function openComments(domElement) {
-        require(["jquery"], function($) {
-            if($(domElement).next().children().find("li").length != 0) {
-                // Open comments
-                $(domElement).next().slideToggle();
-            }
-        });
-    }
-    function collapseComment(domElement) {
-        require(["jquery"], function($) {
-            $(domElement).parent().parent().find('ul').toggle();
-
-            if($(domElement).html() == '[-]')
-                $(domElement).html('[+]');
-            else
-                $(domElement).html('[-]');
-        });
-    }
-    function submitReviewComment(domElement, reviewId, parentId, poster) {
-        require(["jquery"], function($) {
-            var commentText = $(domElement).prev().val();
-            $.ajax({
-                type: 'post',
-                url: "<?php echo $block->getUrl("breviews/comments/index"); ?>",
-                data: { reviewid: reviewId, commenttext: commentText, parent: parentId },
-                dataType: 'json'
-                /*success: function(data, textStatus ){
-                 alert(data); // Debugging Ajax Call
-                 },
-                 error: function(xhr, textStatus, errorThrown){
-                 alert(errorThrown); // Debugging Ajax Call
-                 }*/
-            });
-
-            var renderText = '<li class="review-comments-list-' + ((parentId % 2 == 0) ? 'white' : 'grey') + '-layer"><span class="review-comment-author"><?php /* @escapeNotVerified */ echo __('Comment by')?> ';
-            renderText += '<b>' + poster + '</b></span><span class="review-comment-text">' + commentText + '</span></li>';
-
-            if(parentId != null)
-                var element = $(domElement).parent().next();
-            else
-                var element = $(domElement).parent().prev().find('ul:first-child');
-
-            $(domElement).parent().slideToggle("slow");
-            $(element).append(renderText);
-            $(domElement).prev().val('');
-        });
-    }
-
-</script>
